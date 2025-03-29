@@ -110,7 +110,24 @@ void * popBack(List * list) {
 }
 
 void * popCurrent(List * list) {
-    return NULL;
+    if(!list || !list->current) return NULL;
+    Node *nodoRemove = list->current;
+    void *data = nodoRemove->data;
+    
+    if (nodoRemove->prev)
+        nodoRemove->prev->next = nodoRemove->next;
+    else
+        list->head = nodoRemove->next;
+    
+    if (nodoRemove->next)
+        nodoRemove->next->prev = nodoRemove->prev;
+    else
+        list->tail = nodoRemove->prev;
+    
+    list->current = (nodoRemove->next) ? nodoRemove->next : nodoRemove->prev;
+    
+    free(nodoRemove);
+    return data;
 }
 
 void cleanList(List * list) {
